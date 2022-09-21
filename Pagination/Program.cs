@@ -25,5 +25,5 @@ public class Blog
 
     public string Name { get; set; } = string.Empty;
 
-    public DateTime LastUpdated { get; set; }
+    public DateOnly LastUpdated { get; set; }
 }
