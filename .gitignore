@@ -1,2 +1,5 @@
-bin/
-obj/
+Benchmark/bin/
+Benchmark/obj/
+Benchmark/BenchmarkDotNet.Artifacts/
+Pagination/bin/
+Pagination/obj/
