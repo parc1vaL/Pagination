@@ -6,6 +6,8 @@ CREATE TABLE "Blogs" (
     "LastUpdated" DATE DEFAULT(now())
 );
 
+CREATE INDEX IF NOT EXISTS "IX_Blogs_LastUpdated_Id" ON "Blogs" ("LastUpdated", "Id");
+
 DO $$BEGIN
 FOR i IN 1..1000000 LOOP
     INSERT INTO "Blogs" ("Name", "LastUpdated") VALUES (i::TEXT, now() + INTERVAL '1 day' * (i / 5));

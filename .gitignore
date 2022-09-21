@@ -3,3 +3,5 @@ Benchmark/obj/
 Benchmark/BenchmarkDotNet.Artifacts/
 Pagination/bin/
 Pagination/obj/
+KeysetPagination/bin/
+KeysetPagination/obj/
