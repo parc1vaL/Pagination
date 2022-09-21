@@ -8,7 +8,7 @@ CREATE TABLE "Blogs" (
 
 DO $$BEGIN
 FOR i IN 1..1000000 LOOP
-    INSERT INTO "Blogs" ("Name", "LastUpdated") VALUES (i::TEXT, now() + INTERVAL '1 day' * (i / 2));
+    INSERT INTO "Blogs" ("Name", "LastUpdated") VALUES (i::TEXT, now() + INTERVAL '1 day' * (i / 5));
 END LOOP;
 END$$;
 
