@@ -13,5 +13,3 @@ FOR i IN 1..1000000 LOOP
     INSERT INTO "Blogs" ("Name", "LastUpdated") VALUES ('Entry ' || i::TEXT, now() + INTERVAL '1 day' * (i / 5));
 END LOOP;
 END$$;
-
-SELECT * FROM "Blogs" LIMIT 100;

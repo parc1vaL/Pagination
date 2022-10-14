@@ -1,0 +1,2 @@
+#!/bin/sh
+docker exec -it pagination psql -U postgres -f /scripts/keyset.sql

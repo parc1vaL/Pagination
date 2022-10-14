@@ -6,16 +6,15 @@ BenchmarkRunner.Run<Benchmarks>();
 
 public class Benchmarks
 {
-    private const string ConnectionString = "Host=localhost;Username=postgres;Password=supersecret";
-    private NpgsqlConnection connection;
+    private NpgsqlConnection connection = null!;
 
     [Params(20, 900000)]
-    public int Value { get; set; }
+    public int Skip { get; set; }
 
     [GlobalSetup]
     public async Task Setup()
     {
-        this.connection = new NpgsqlConnection(ConnectionString);
+        this.connection = new NpgsqlConnection("Host=localhost;Username=postgres;Password=supersecret");
         await this.connection.OpenAsync();
     }
 
@@ -26,19 +25,7 @@ public class Benchmarks
 SELECT b.""Id"", b.""LastUpdated""
 FROM ""Blogs"" AS b
 ORDER BY b.""Id""
-LIMIT 10 OFFSET {Value}", connection);
-
-        await command.ExecuteNonQueryAsync();
-    }
-
-    [Benchmark]
-    public async Task KeysetPagination()
-    {
-        using var command = new NpgsqlCommand($@"
-SELECT b.""Id"", b.""LastUpdated""
-FROM ""Blogs"" AS b
-WHERE b.""Id"" > {Value}
-LIMIT 10", connection);
+LIMIT 10 OFFSET {Skip}", connection);
 
         await command.ExecuteNonQueryAsync();
     }

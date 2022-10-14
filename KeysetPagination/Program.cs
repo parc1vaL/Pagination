@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using MR.EntityFrameworkCore.KeysetPagination;
 
 using var ctx = new BloggingContext();
@@ -13,19 +14,21 @@ var blogs = await keysetContext.Query
 
 keysetContext.EnsureCorrectOrder(blogs);
 
-var lastItem = blogs[9];
+var reference = blogs[blogs.Count - 1];
 
 keysetContext = ctx.Blogs
     .KeysetPaginate(
         blog => blog.Ascending(entity => entity.LastUpdated).Ascending(entity => entity.Id),
         KeysetPaginationDirection.Forward,
-        lastItem);
+        reference);
 
 blogs = await keysetContext.Query
     .Take(10)
     .ToListAsync();
 
 keysetContext.EnsureCorrectOrder(blogs);
+
+var hasNext = await keysetContext.HasNextAsync(blogs);
 
 public class BloggingContext : DbContext
 {
@@ -34,7 +37,7 @@ public class BloggingContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
         optionsBuilder
             .UseNpgsql("Host=localhost;Username=postgres;Password=supersecret")
-            .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
+            .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted, })
             .EnableSensitiveDataLogging();
 }
 

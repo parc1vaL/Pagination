@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 using var ctx = new BloggingContext();
 
@@ -15,7 +16,7 @@ public class BloggingContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
         optionsBuilder
             .UseNpgsql("Host=localhost;Username=postgres;Password=supersecret")
-            .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
+            .LogTo(Console.WriteLine, new[] { RelationalEventId.CommandExecuted, })
             .EnableSensitiveDataLogging();
 }
 

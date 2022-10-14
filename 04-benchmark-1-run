@@ -1,0 +1,2 @@
+#!/bin/sh
+dotnet run --project Benchmark1/Benchmark1.csproj -c Release

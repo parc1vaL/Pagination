@@ -1,0 +1,2 @@
+#!/bin/sh
+docker exec -it pagination psql -U postgres -P pager=off -c 'SELECT * FROM "Blogs" LIMIT 100;'
