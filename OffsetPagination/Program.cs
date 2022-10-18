@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
+const int page = 3;
+const int pageSize = 10;
+
 using var ctx = new BloggingContext();
 
 var someBlogs = await ctx.Blogs
     .OrderBy(b => b.Id)
-    .Skip(20)
-    .Take(10)
+    .Skip((page - 1) * pageSize)
+    .Take(pageSize)
     .ToArrayAsync();
 
 public class BloggingContext : DbContext

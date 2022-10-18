@@ -1,2 +1,3 @@
 #!/bin/sh
+echo 'running benchmark 1'
 dotnet run --project Benchmark1/Benchmark1.csproj -c Release

@@ -1,2 +1,3 @@
 #!/bin/sh
+echo 'runngin OffsetPagination project...'
 dotnet run --project OffsetPagination/OffsetPagination.csproj -c Release

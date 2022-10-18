@@ -1,2 +1,4 @@
 #!/bin/sh
-docker rm --force pagination > /dev/null
+echo -n 'dropping contaier... '
+docker rm --force pagination > /dev/null 2> /dev/null
+echo 'done'

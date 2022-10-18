@@ -1,6 +1,10 @@
 #!/bin/sh
-docker run -d -e POSTGRES_PASSWORD=supersecret --name pagination -p 127.0.0.1:5432:5432 -v "$(pwd)"/scripts:/scripts:ro postgres
+echo -n 'creating new container... '
+docker run -d -e POSTGRES_PASSWORD=supersecret --name pagination -p 127.0.0.1:5432:5432 -v "$(pwd)"/scripts:/scripts:ro postgres > /dev/null
+echo 'done'
 
 sleep 1
 
-docker exec -it pagination psql -U postgres -f /scripts/seed.sql
+echo -n 'executing seeding script... '
+docker exec -it pagination psql -U postgres -f /scripts/seed.sql > /dev/null
+echo 'done'
