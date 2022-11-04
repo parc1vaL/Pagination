@@ -3,32 +3,38 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using MR.EntityFrameworkCore.KeysetPagination;
 
 using var ctx = new BloggingContext();
+const int pageSize = 10;
+const KeysetPaginationDirection direction = KeysetPaginationDirection.Forward;
 
-var keysetContext = ctx.Blogs
-    .KeysetPaginate(
-        blog => blog.Ascending(entity => entity.LastUpdated).Ascending(entity => entity.Id));
-
-var blogs = await keysetContext.Query
-    .Take(10)
-    .ToListAsync();
-
-keysetContext.EnsureCorrectOrder(blogs);
-
-var reference = blogs[blogs.Count - 1];
-
-keysetContext = ctx.Blogs
+var keysetPaginationContext = ctx.Blogs
     .KeysetPaginate(
         blog => blog.Ascending(entity => entity.LastUpdated).Ascending(entity => entity.Id),
-        KeysetPaginationDirection.Forward,
-        reference);
+        direction);
 
-blogs = await keysetContext.Query
-    .Take(10)
+var blogs = await keysetPaginationContext.Query
+    .Take(pageSize)
     .ToListAsync();
 
-keysetContext.EnsureCorrectOrder(blogs);
+keysetPaginationContext.EnsureCorrectOrder(blogs);
 
-var hasNext = await keysetContext.HasNextAsync(blogs);
+var reference =
+    direction == KeysetPaginationDirection.Forward
+        ? blogs[blogs.Count - 1]
+        : blogs[0];
+
+keysetPaginationContext = ctx.Blogs
+    .KeysetPaginate(
+        blog => blog.Ascending(entity => entity.LastUpdated).Ascending(entity => entity.Id),
+        direction,
+        reference);
+
+blogs = await keysetPaginationContext.Query
+    .Take(pageSize)
+    .ToListAsync();
+
+keysetPaginationContext.EnsureCorrectOrder(blogs);
+
+var hasNext = await keysetPaginationContext.HasNextAsync(blogs);
 
 public class BloggingContext : DbContext
 {

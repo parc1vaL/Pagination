@@ -9,7 +9,7 @@ public class Benchmarks
     private NpgsqlConnection connection = null!;
 
     [Params(20, 900000)]
-    public int Skip { get; set; }
+    public int Offset { get; set; }
 
     [GlobalSetup]
     public async Task Setup()
@@ -25,7 +25,7 @@ public class Benchmarks
 SELECT b.""Id"", b.""LastUpdated""
 FROM ""Blogs"" AS b
 ORDER BY b.""Id""
-LIMIT 10 OFFSET {Skip}", connection);
+LIMIT 10 OFFSET {Offset}", connection);
 
         await command.ExecuteNonQueryAsync();
     }

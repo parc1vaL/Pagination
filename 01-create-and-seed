@@ -1,6 +1,6 @@
 #!/bin/sh
 echo -n 'creating new container... '
-docker run -d -e POSTGRES_PASSWORD=supersecret --name pagination -p 127.0.0.1:5432:5432 -v "$(pwd)"/scripts:/scripts:ro postgres > /dev/null
+docker run -d -e POSTGRES_PASSWORD=supersecret --name pagination -p 127.0.0.1:5432:5432 -v "$(pwd)"/scripts:/scripts:ro postgres:15 > /dev/null
 echo 'done'
 
 sleep 1

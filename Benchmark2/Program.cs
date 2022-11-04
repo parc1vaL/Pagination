@@ -9,7 +9,7 @@ public class Benchmarks
     private NpgsqlConnection connection = null!;
 
     [Params(20, 900000)]
-    public int LastSeenElement { get; set; }
+    public int ReferenceId { get; set; }
 
     [GlobalSetup]
     public async Task Setup()
@@ -24,7 +24,7 @@ public class Benchmarks
         using var command = new NpgsqlCommand($@"
 SELECT b.""Id"", b.""LastUpdated""
 FROM ""Blogs"" AS b
-WHERE b.""Id"" > {LastSeenElement}
+WHERE b.""Id"" > {ReferenceId}
 LIMIT 10", connection);
 
         await command.ExecuteNonQueryAsync();

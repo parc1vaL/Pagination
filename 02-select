@@ -1,3 +1,3 @@
 #!/bin/sh
-echo 'executing: SELECT * FROM "Blogs" LIMIT 100;'
-docker exec -it pagination psql -U postgres -P pager=off -c 'SELECT * FROM "Blogs" LIMIT 100;'
+echo 'executing: SELECT * FROM "Blogs" ORDER BY "Id" LIMIT 100;'
+docker exec -it pagination psql -U postgres -P pager=off -c 'SELECT * FROM "Blogs" ORDER BY "Id" LIMIT 100;'
