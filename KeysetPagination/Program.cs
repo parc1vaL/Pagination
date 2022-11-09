@@ -6,6 +6,9 @@ using var ctx = new BloggingContext();
 const int pageSize = 10;
 const KeysetPaginationDirection direction = KeysetPaginationDirection.Forward;
 
+// -----------
+// Erste Seite
+// -----------
 var keysetPaginationContext = ctx.Blogs
     .KeysetPaginate(
         blog => blog.Ascending(entity => entity.LastUpdated).Ascending(entity => entity.Id),
@@ -15,8 +18,20 @@ var blogs = await keysetPaginationContext.Query
     .Take(pageSize)
     .ToListAsync();
 
-keysetPaginationContext.EnsureCorrectOrder(blogs);
+// Alternativ:
+// blogs = await ctx.Blogs
+//     .KeysetPaginateQuery(
+//         blog => blog.Ascending(entity => entity.LastUpdated).Ascending(entity => entity.Id),
+//         direction)
+//     .Take(pageSize)
+//     .ToListAsync();
 
+// Äquivalent zu: if (direction == KeysetPaginationDirection.Backward) { blogs.Reverse(); }
+// keysetPaginationContext.EnsureCorrectOrder(blogs);
+
+// -----------
+// Zweite Seite
+// -----------
 var reference =
     direction == KeysetPaginationDirection.Forward
         ? blogs[blogs.Count - 1]
@@ -32,9 +47,11 @@ blogs = await keysetPaginationContext.Query
     .Take(pageSize)
     .ToListAsync();
 
-keysetPaginationContext.EnsureCorrectOrder(blogs);
+// s.o.
+// keysetPaginationContext.EnsureCorrectOrder(blogs);
 
-var hasNext = await keysetPaginationContext.HasNextAsync(blogs);
+// Gibt es noch eine weitere Seite?
+// var hasNext = await keysetPaginationContext.HasNextAsync(blogs);
 
 public class BloggingContext : DbContext
 {
